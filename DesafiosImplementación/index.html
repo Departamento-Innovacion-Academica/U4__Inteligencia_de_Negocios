@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tarjetas Interactivas - Aplicación y Beneficios de BI</title>
+    <!-- Fuente Poppins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0f0c1b;
+            --purple-card: rgba(38, 20, 66, 0.75);
+            --purple-accent: #a855f7;
+            --purple-glow: #8b5cf6;
+            --purple-hover: #c084fc;
+            --text-light: #f3e8ff;
+            --text-muted: #d8b4fe;
+            --border-purple: rgba(168, 85, 247, 0.3);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            background-image: 
+                radial-gradient(circle at 15% 20%, rgba(139, 92, 246, 0.25) 0%, transparent 40%),
+                radial-gradient(circle at 85% 80%, rgba(168, 85, 247, 0.2) 0%, transparent 40%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 20px 80px 20px;
+            color: var(--text-light);
+            text-align: left;
+            position: relative;
+        }
+
+        /* Instrucción Flotante */
+        .floating-instruction {
+            position: fixed;
+            bottom: 25px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(139, 92, 246, 0.25);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(192, 132, 252, 0.5);
+            color: #ffffff;
+            padding: 12px 28px;
+            border-radius: 50px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            box-shadow: 0 10px 30px rgba(139, 92, 246, 0.3), inset 0 0 15px rgba(168, 85, 247, 0.2);
+            z-index: 100;
+            animation: pulseFloating 2.5s infinite ease-in-out;
+            pointer-events: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-align: left;
+        }
+
+        .floating-instruction::before {
+            content: '✦';
+            color: var(--purple-hover);
+            font-size: 1.1rem;
+        }
+
+        @keyframes pulseFloating {
+            0%, 100% {
+                transform: translateX(-50%) translateY(0);
+                box-shadow: 0 10px 30px rgba(139, 92, 246, 0.3);
+            }
+            50% {
+                transform: translateX(-50%) translateY(-6px);
+                box-shadow: 0 15px 35px rgba(168, 85, 247, 0.5);
+            }
+        }
+
+        /* Contenedor Grid 1x3 */
+        .container {
+            width: 100%;
+            max-width: 1100px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+        }
+
+        @media (max-width: 850px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Tarjetas Botón */
+        .card-btn {
+            background: var(--purple-card);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--border-purple);
+            border-radius: 20px;
+            padding: 35px 28px;
+            cursor: pointer;
+            text-align: left;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 200px;
+            outline: none;
+            appearance: none;
+        }
+
+        .card-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+            transition: 0.6s;
+        }
+
+        .card-btn:hover::before {
+            left: 100%;
+        }
+
+        .card-btn:hover {
+            transform: translateY(-8px) scale(1.02);
+            border-color: var(--purple-hover);
+            box-shadow: 0 20px 40px rgba(139, 92, 246, 0.4), 0 0 20px rgba(168, 85, 247, 0.3);
+            background: rgba(55, 28, 95, 0.85);
+        }
+
+        .card-btn:active {
+            transform: translateY(-2px) scale(0.99);
+        }
+
+        .card-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #ffffff;
+            line-height: 1.4;
+            text-align: left;
+        }
+
+        .card-action {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--purple-hover);
+            margin-top: 20px;
+            transition: gap 0.3s ease;
+            text-align: left;
+        }
+
+        .card-btn:hover .card-action {
+            gap: 14px;
+            color: #ffffff;
+        }
+
+        .card-action svg {
+            width: 18px;
+            height: 18px;
+            fill: currentColor;
+            transition: transform 0.3s ease;
+        }
+
+        .card-btn:hover .card-action svg {
+            transform: translateX(4px);
+        }
+
+        /* Ventanas Modales */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(10, 5, 20, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s ease;
+            z-index: 1000;
+            padding: 20px;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background: linear-gradient(145deg, rgba(30, 16, 53, 0.95), rgba(15, 10, 28, 0.98));
+            border: 1px solid var(--purple-glow);
+            border-radius: 24px;
+            padding: 40px;
+            max-width: 650px;
+            width: 100%;
+            max-height: 85vh;
+            overflow-y: auto;
+            position: relative;
+            transform: scale(0.8) translateY(30px);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.7), 0 0 30px rgba(139, 92, 246, 0.3);
+            text-align: left;
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: scale(1) translateY(0);
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: #ffffff;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            transition: background 0.3s, transform 0.3s;
+        }
+
+        .close-btn:hover {
+            background: var(--purple-glow);
+            transform: rotate(90deg);
+        }
+
+        .modal-title {
+            font-size: 1.45rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 20px;
+            padding-right: 30px;
+            line-height: 1.35;
+            text-align: left;
+            border-bottom: 2px solid var(--border-purple);
+            padding-bottom: 12px;
+        }
+
+        .modal-text {
+            font-size: 0.98rem;
+            color: var(--text-light);
+            line-height: 1.6;
+            margin-bottom: 18px;
+            text-align: left;
+        }
+
+        .modal-list {
+            list-style: none;
+            margin-bottom: 20px;
+            padding-left: 0;
+            text-align: left;
+        }
+
+        .modal-list li {
+            position: relative;
+            padding-left: 24px;
+            margin-bottom: 10px;
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+            text-align: left;
+        }
+
+        .modal-list li::before {
+            content: '•';
+            position: absolute;
+            left: 8px;
+            top: 0;
+            color: var(--purple-hover);
+            font-size: 1.2rem;
+        }
+
+        .modal-ending {
+            font-size: 0.95rem;
+            color: var(--text-light);
+            line-height: 1.6;
+            background: rgba(139, 92, 246, 0.12);
+            padding: 15px;
+            border-left: 4px solid var(--purple-glow);
+            border-radius: 0 10px 10px 0;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Instrucción Flotante -->
+    <div class="floating-instruction">
+        Haga clic sobre las tarjetas para ampliar la información.
+    </div>
+
+    <!-- Contenedor Grid 1x3 -->
+    <div class="container">
+        
+        <!-- Tarjeta 1 -->
+        <button class="card-btn" onclick="openModal('modal-1')">
+            <div class="card-title">1.1.4.5 Aplicación en entornos de BI</div>
+            <div class="card-action">
+                <span>Ver información</span>
+                <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+        </button>
+
+        <!-- Tarjeta 2 -->
+        <button class="card-btn" onclick="openModal('modal-2')">
+            <div class="card-title">1.1.4.6 Beneficios organizacionales</div>
+            <div class="card-action">
+                <span>Ver información</span>
+                <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+        </button>
+
+        <!-- Tarjeta 3 -->
+        <button class="card-btn" onclick="openModal('modal-3')">
+            <div class="card-title">1.1.4.7 Desafíos en su implementación</div>
+            <div class="card-action">
+                <span>Ver información</span>
+                <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+        </button>
+
+    </div>
+
+    <!-- Modales -->
+    <div class="modal-overlay" id="modal-1" onclick="closeModalOnOverlay(event, 'modal-1')">
+        <div class="modal-content">
+            <button class="close-btn" onclick="closeModal('modal-1')">✕</button>
+            <div class="modal-title">1.1.4.5 Aplicación en entornos de BI</div>
+            <p class="modal-text">
+                En Business Intelligence, la aplicación de estos elementos permite:
+            </p>
+            <ul class="modal-list">
+                <li>Garantizar consistencia en los dashboards.</li>
+                <li>Asegurar calidad en los datos analíticos.</li>
+                <li>Evitar duplicidad de información.</li>
+                <li>Facilitar la integración de datos.</li>
+            </ul>
+            <p class="modal-ending">
+                Esto resulta fundamental para que los análisis sean confiables y útiles para la toma de decisiones.
+            </p>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="modal-2" onclick="closeModalOnOverlay(event, 'modal-2')">
+        <div class="modal-content">
+            <button class="close-btn" onclick="closeModal('modal-2')">✕</button>
+            <div class="modal-title">1.1.4.6 Beneficios organizacionales</div>
+            <p class="modal-text">
+                La implementación de políticas, estándares y procesos adecuados permite:
+            </p>
+            <ul class="modal-list">
+                <li>Mejorar la calidad de la información.</li>
+                <li>Reducir errores en el análisis.</li>
+                <li>Aumentar la eficiencia operativa.</li>
+                <li>Fortalecer la gobernanza de datos.</li>
+            </ul>
+            <p class="modal-ending">
+                Estos beneficios contribuyen directamente al éxito de las iniciativas de BI.
+            </p>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="modal-3" onclick="closeModalOnOverlay(event, 'modal-3')">
+        <div class="modal-content">
+            <button class="close-btn" onclick="closeModal('modal-3')">✕</button>
+            <div class="modal-title">1.1.4.7 Desafíos en su implementación</div>
+            <p class="modal-text">
+                A pesar de sus beneficios, existen desafíos en la implementación:
+            </p>
+            <ul class="modal-list">
+                <li>Dificultad para definir estándares comunes.</li>
+                <li>Resistencia al cambio organizacional.</li>
+                <li>Falta de alineación entre áreas.</li>
+                <li>Necesidad de capacitación.</li>
+            </ul>
+            <p class="modal-ending">
+                Estos aspectos deben ser gestionados para asegurar el éxito del modelo de gobernanza (Kshetri, 2021).
+            </p>
+        </div>
+    </div>
+
+    <script>
+        function openModal(id) {
+            document.getElementById(id).classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal(id) {
+            document.getElementById(id).classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        function closeModalOnOverlay(event, id) {
+            if (event.target.id === id) {
+                closeModal(id);
+            }
+        }
+
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                const activeModals = document.querySelectorAll('.modal-overlay.active');
+                activeModals.forEach(modal => {
+                    modal.classList.remove('active');
+                });
+                document.body.style.overflow = 'auto';
+            }
+        });
+    </script>
+</body>
+</html>
