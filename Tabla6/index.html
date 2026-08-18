@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Metodología, Enfoque y Ventaja Principal</title>
+    <!-- Importación de la fuente Poppins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-color: #4D3FA1; /* Morado corporativo */
+            --primary-hover: #3b2e82;
+            --bg-light: #F0EDFD;       /* Lila claro para filas alternadas */
+            --bg-white: #ffffff;
+            --text-color: #2c3e50;
+            --border-color: #E2DCF7;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f7f6fc;
+            margin: 0;
+            padding: 40px 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            box-sizing: border-box;
+            overflow-x: hidden;
+        }
+
+        .table-container {
+            width: 100%;
+            max-width: 1100px;
+            box-shadow: 0 12px 40px rgba(77, 63, 161, 0.12);
+            border-radius: 8px;
+            overflow: hidden;
+            background-color: var(--bg-white);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            table-layout: fixed;
+        }
+
+        th, td {
+            padding: 16px 20px;
+            font-size: 14px;
+            color: var(--text-color);
+            border: 1px solid var(--border-color);
+            line-height: 1.5;
+            vertical-align: middle;
+        }
+
+        /* --- CONTROL DE PROPORCIONES Y ALINEACIONES --- */
+        th:nth-child(1), td:nth-child(1) { width: 30%; text-align: left; padding-left: 24px; }
+        th:nth-child(2), td:nth-child(2) { width: 35%; text-align: left; padding-left: 24px; }
+        th:nth-child(3), td:nth-child(3) { width: 35%; text-align: left; padding-left: 24px; }
+
+        /* Estilo para la primera columna del cuerpo */
+        tbody td:nth-child(1) {
+            font-weight: 500;
+            color: #111111;
+        }
+
+        /* --- ENCABEZADOS MORADOS CON EFECTO LÁTIGO VERTICAL --- */
+        thead th {
+            background-color: var(--primary-color);
+            color: var(--bg-white) !important;
+            font-weight: 600;
+            font-size: 15px;
+            letter-spacing: 0.5px;
+            padding: 18px 20px;
+            animation: whipHeader 0.85s cubic-bezier(0.68, -0.6, 0.32, 1.6) both;
+        }
+
+        /* Alternancia de color en las filas (Zebra Striping comenzando con blanco) */
+        tbody tr:nth-child(even) td {
+            background-color: var(--bg-light);
+        }
+        tbody tr:nth-child(odd) td {
+            background-color: var(--bg-white);
+        }
+
+        /* --- KEYFRAMES EFECTO LÁTIGO (WHIP EFFECT) --- */
+        @keyframes whipHeader {
+            0% {
+                opacity: 0;
+                transform: translateY(-80px) scaleY(1.4) skewY(-3deg);
+            }
+            60% {
+                opacity: 1;
+                transform: translateY(18px) scaleY(0.85) skewY(2deg);
+            }
+            80% {
+                transform: translateY(-6px) scaleY(1.05) skewY(-0.5deg);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) scaleY(1) skewY(0deg);
+            }
+        }
+
+        @keyframes whipRow {
+            0% {
+                opacity: 0;
+                transform: translateX(-120px) scaleX(1.15) skewX(12deg);
+            }
+            60% {
+                opacity: 1;
+                transform: translateX(20px) scaleX(0.92) skewX(-4deg);
+            }
+            80% {
+                transform: translateX(-8px) scaleX(1.03) skewX(1.5deg);
+            }
+            100% {
+                opacity: 1;
+                transform: translateX(0) scaleX(1) skewX(0deg);
+            }
+        }
+
+        tbody tr {
+            opacity: 0;
+            animation: whipRow 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+        }
+
+        /* Retrasos secuenciales para las 3 filas */
+        tbody tr:nth-child(1) { animation-delay: 0.15s; }
+        tbody tr:nth-child(2) { animation-delay: 0.27s; }
+        tbody tr:nth-child(3) { animation-delay: 0.39s; }
+
+        /* Efecto Hover interactivo */
+        tbody tr:hover td {
+            background-color: rgba(77, 63, 161, 0.08) !important;
+            transition: background-color 0.15s ease;
+            cursor: default;
+        }
+
+        /* --- SECCIÓN DE CONTROLES (SEPARADO EN LÍNEAS) --- */
+        .controls-container {
+            margin-top: 28px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+        }
+
+        /* Botón estilizado tipo Píldora Moderno */
+        .play-btn {
+            background: linear-gradient(135deg, #5B4BB8 0%, #4D3FA1 100%);
+            color: #ffffff;
+            border: none;
+            padding: 10px 28px;
+            border-radius: 25px;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            outline: none;
+            box-shadow: 0 4px 15px rgba(77, 63, 161, 0.25);
+        }
+
+        .play-btn .icon {
+            font-size: 13px;
+            transition: transform 0.2s ease;
+        }
+
+        .play-btn:hover {
+            transform: translateY(-2px);
+            background: linear-gradient(135deg, #6756cd 0%, #3d3185 100%);
+            box-shadow: 0 6px 20px rgba(77, 63, 161, 0.35);
+        }
+
+        .play-btn:hover .icon {
+            transform: scale(1.15);
+        }
+
+        .play-btn:active {
+            transform: translateY(1px);
+            box-shadow: 0 2px 8px rgba(77, 63, 161, 0.2);
+        }
+
+        /* Texto de instrucción separado */
+        .hint {
+            font-size: 13.5px;
+            color: #666666;
+            background-color: #ffffff;
+            padding: 6px 18px;
+            border-radius: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            border: 1px solid #eae6f8;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>METODOLOGÍA</th>
+                    <th>ENFOQUE</th>
+                    <th>VENTAJA PRINCIPAL</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Fila 1 -->
+                <tr>
+                    <td>CRISP-DM</td>
+                    <td>Analítico</td>
+                    <td>Orientación a datos</td>
+                </tr>
+                <!-- Fila 2 -->
+                <tr>
+                    <td>Ágil (Scrum)</td>
+                    <td>Iterativo</td>
+                    <td>Flexibilidad</td>
+                </tr>
+                <!-- Fila 3 -->
+                <tr>
+                    <td>PMI (PMBOK)</td>
+                    <td>Estructurado</td>
+                    <td>Control y planificación</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Contenedor con elementos separados en verticales -->
+    <div class="controls-container">
+        <button class="play-btn" id="restartBtn" title="Reiniciar animación">
+            <span class="icon">▶</span>
+            <span>Reiniciar</span>
+        </button>
+        <div class="hint">Haga clic sobre el botón "▶" para reiniciar la animación.</div>
+    </div>
+
+    <!-- Script JavaScript para reinicio de animación mediante el botón -->
+    <script>
+        function triggerWhipAnimation() {
+            const tableContainer = document.querySelector('.table-container');
+            
+            // Ocultamos temporalmente para reiniciar animaciones
+            tableContainer.style.display = 'none';
+            
+            // Forzamos un reflow del navegador
+            void tableContainer.offsetWidth; 
+            
+            // Mostramos de nuevo para activar las animaciones
+            tableContainer.style.display = 'block';
+        }
+
+        document.getElementById('restartBtn').addEventListener('click', triggerWhipAnimation);
+    </script>
+</body>
+</html>
