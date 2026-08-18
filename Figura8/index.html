@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proceso de Datos</title>
+    
+    <!-- Fuente Poppins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome CDN para iconos vectoriales -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        :root {
+            --bg-page: #f9f8f6;
+            --bg-card: #ecebe9;
+            --text-color: #1a1a1a;
+            --icon-color: #3b4856;
+            --arrow-color: #ff6f00; /* Naranja de las flechas múltiples */
+            --btn-bg: #6b21a8;      /* Morado elegante para el botón principal */
+            --btn-hover: #581c87;   /* Morado más oscuro al pasar el cursor */
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-page);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        /* --- Panel de Control / Instrucción y Botón --- */
+        .controls-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .instruction-text {
+            font-size: 0.95rem;
+            color: #555;
+            font-weight: 500;
+        }
+
+        .btn-reset {
+            background-color: var(--btn-bg);
+            color: #ffffff;
+            border: none;
+            padding: 10px 24px;
+            font-size: 0.95rem;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: background-color 0.2s ease, transform 0.1s ease;
+            box-shadow: 0 4px 10px rgba(107, 33, 168, 0.25);
+        }
+
+        .btn-reset:hover {
+            background-color: var(--btn-hover);
+        }
+
+        .btn-reset:active {
+            transform: scale(0.96);
+        }
+
+        /* --- Estructura Principal (5 Tarjetas) --- */
+        .process-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            max-width: 1300px;
+            width: 100%;
+        }
+
+        .card {
+            background-color: var(--bg-card);
+            border-radius: 20px;
+            padding: 30px 15px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+            min-height: 220px;
+            
+            /* Preparación para animación */
+            opacity: 0;
+        }
+
+        .icon-container {
+            height: 90px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+        }
+
+        .icon-container i {
+            font-size: 65px;
+            color: var(--icon-color);
+        }
+
+        .card-title {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--text-color);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            line-height: 1.2;
+        }
+
+        /* Flechas triples de triple-chevron */
+        .arrow-separator {
+            color: var(--arrow-color);
+            font-size: 22px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            gap: -2px;
+            
+            /* Preparación para animación */
+            opacity: 0;
+        }
+
+        /* --- Animación Látigo (Whip) --- */
+        .animate-whip {
+            animation: whipIn 0.8s cubic-bezier(0.68, -0.6, 0.32, 1.6) forwards;
+        }
+
+        @keyframes whipIn {
+            0% {
+                opacity: 0;
+                transform: translateX(-120px) scaleX(1.4) skewX(-20deg);
+            }
+            70% {
+                opacity: 1;
+                transform: translateX(15px) scaleX(0.95) skewX(5deg);
+            }
+            100% {
+                opacity: 1;
+                transform: translateX(0) scaleX(1) skewX(0deg);
+            }
+        }
+
+        /* Retrasos escalonados */
+        .delay-1 { animation-delay: 0.05s; }
+        .delay-2 { animation-delay: 0.15s; }
+        .delay-3 { animation-delay: 0.25s; }
+        .delay-4 { animation-delay: 0.35s; }
+        .delay-5 { animation-delay: 0.45s; }
+        .delay-6 { animation-delay: 0.55s; }
+        .delay-7 { animation-delay: 0.65s; }
+        .delay-8 { animation-delay: 0.75s; }
+        .delay-9 { animation-delay: 0.85s; }
+
+        /* Responsividad */
+        @media (max-width: 950px) {
+            .process-container {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .card {
+                width: 100%;
+                max-width: 320px;
+                min-height: auto;
+                padding: 25px 15px;
+            }
+
+            .arrow-separator {
+                transform: rotate(90deg);
+            }
+
+            @keyframes whipIn {
+                0% {
+                    opacity: 0;
+                    transform: translateY(-80px) scaleY(1.3) skewY(-10deg);
+                }
+                70% {
+                    opacity: 1;
+                    transform: translateY(10px) scaleY(0.95) skewY(3deg);
+                }
+                100% {
+                    opacity: 1;
+                    transform: translateY(0) scaleY(1) skewY(0deg);
+                }
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Zona de Control -->
+    <div class="controls-container">
+        <p class="instruction-text">Haga clic sobre el botón "Reiniciar ▶" para reiniciar la animación.</p>
+        <button class="btn-reset" onclick="resetAnimation()">Reiniciar ▶</button>
+    </div>
+
+    <!-- Estructura del Proceso -->
+    <div class="process-container" id="process-container">
+        
+        <!-- Tarjeta 1: CAPTURA -->
+        <div class="card animate-whip delay-1">
+            <div class="icon-container">
+                <i class="fa-solid fa-expand"></i>
+            </div>
+            <h3 class="card-title">CAPTURA</h3>
+        </div>
+
+        <!-- Flecha 1 -->
+        <div class="arrow-separator animate-whip delay-2">
+            <i class="fa-solid fa-angles-right"></i>
+        </div>
+
+        <!-- Tarjeta 2: PROCESAMIENTO -->
+        <div class="card animate-whip delay-3">
+            <div class="icon-container">
+                <i class="fa-solid fa-microchip"></i>
+            </div>
+            <h3 class="card-title">PROCESAMIENTO</h3>
+        </div>
+
+        <!-- Flecha 2 -->
+        <div class="arrow-separator animate-whip delay-4">
+            <i class="fa-solid fa-angles-right"></i>
+        </div>
+
+        <!-- Tarjeta 3: ALMACENAMIENTO -->
+        <div class="card animate-whip delay-5">
+            <div class="icon-container">
+                <i class="fa-solid fa-database"></i>
+            </div>
+            <h3 class="card-title">ALMACENAMIENTO</h3>
+        </div>
+
+        <!-- Flecha 3 -->
+        <div class="arrow-separator animate-whip delay-6">
+            <i class="fa-solid fa-angles-right"></i>
+        </div>
+
+        <!-- Tarjeta 4: ANÁLISIS -->
+        <div class="card animate-whip delay-7">
+            <div class="icon-container">
+                <i class="fa-solid fa-magnifying-glass-chart"></i>
+            </div>
+            <h3 class="card-title">ANÁLISIS</h3>
+        </div>
+
+        <!-- Flecha 4 -->
+        <div class="arrow-separator animate-whip delay-8">
+            <i class="fa-solid fa-angles-right"></i>
+        </div>
+
+        <!-- Tarjeta 5: ARCHIVO -->
+        <div class="card animate-whip delay-9">
+            <div class="icon-container">
+                <i class="fa-solid fa-folder-closed"></i>
+            </div>
+            <h3 class="card-title">ARCHIVO</h3>
+        </div>
+
+    </div>
+
+    <!-- Script de Reinicio -->
+    <script>
+        function resetAnimation() {
+            const animatedElements = document.querySelectorAll('#process-container .animate-whip');
+            
+            animatedElements.forEach(el => {
+                el.classList.remove('animate-whip');
+                void el.offsetWidth; // Reflow para reiniciar la animación CSS
+                el.classList.add('animate-whip');
+            });
+        }
+    </script>
+
+</body>
+</html>
