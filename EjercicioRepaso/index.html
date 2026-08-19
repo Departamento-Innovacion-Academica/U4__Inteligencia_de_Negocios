@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Repaso: Gobernanza y Estrategia BI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <!-- Librería de Confeti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    
+    <style>
+        :root {
+            /* Tonos de azules */
+            --primary: #1d4ed8; /* Blue 700 */
+            --primary-dark: #1e3a8a; /* Blue 900 */
+            --primary-light: #eff6ff; /* Blue 50 */
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            font-size: 17px;
+            line-height: 1.6;
+            color: #333;
+            /* Fondo para resaltar el Glassmorphism */
+            background: linear-gradient(135deg, #e0e7ff 0%, #bfdbfe 100%);
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        /* Diseño Cristal / Glassmorphism */
+        #main-container {
+            width: 95%;
+            max-width: 1000px;
+            height: 870px; 
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            border-radius: 2.5rem;
+            box-shadow: 0 25px 50px -12px rgba(29, 78, 216, 0.15);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .scroll-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 2.5rem 3.5rem;
+            scrollbar-width: thin;
+            scrollbar-color: var(--primary) transparent;
+        }
+
+        .text-custom { color: var(--primary); }
+        .bg-custom { background-color: var(--primary); }
+        .border-custom { border-color: var(--primary); }
+
+        .btn-action {
+            background-color: var(--primary);
+            color: white;
+            padding: 1rem 3.5rem;
+            border-radius: 99px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+            display: inline-block;
+        }
+        .btn-action:hover:not(:disabled) {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(29, 78, 216, 0.3);
+        }
+
+        .option-card {
+            transition: all 0.2s ease;
+            border: 2px solid rgba(255, 255, 255, 0.6);
+            background: rgba(255, 255, 255, 0.6);
+            cursor: pointer;
+        }
+        
+        .option-card.selected {
+            border-color: var(--primary);
+            background-color: var(--primary-light);
+        }
+
+        .option-card.locked { pointer-events: none; }
+
+        .drop-zone-matching {
+            border: 2px dashed #93c5fd;
+            background-color: rgba(255, 255, 255, 0.5);
+            min-height: 54px;
+            width: 240px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            transition: all 0.3s;
+            cursor: pointer;
+            padding: 4px;
+        }
+        .drop-zone-matching.active {
+            border-color: var(--primary);
+            background-color: var(--primary-light);
+        }
+
+        .drag-item-matching {
+            background: white;
+            border: 2px solid var(--primary);
+            padding: 10px 18px;
+            border-radius: 12px;
+            cursor: grab;
+            font-weight: 600;
+            font-size: 15px;
+            box-shadow: 0 4px 6px -1px rgba(29, 78, 216, 0.1);
+            color: #1e293b;
+            transition: all 0.2s;
+            user-select: none;
+            display: inline-block;
+        }
+        .drag-item-matching:active { cursor: grabbing; transform: scale(0.96); }
+        .drag-item-matching.selected-for-click {
+            background-color: var(--primary-light);
+            border-color: var(--primary-dark);
+            box-shadow: 0 0 0 3px rgba(29, 78, 216, 0.3);
+        }
+        .drag-item-matching.placed {
+            width: 100%;
+            text-align: center;
+            box-shadow: none;
+        }
+
+        .circle-bar { 
+            fill: none; 
+            stroke: var(--primary); 
+            stroke-width: 10; 
+            stroke-linecap: round; 
+            transition: stroke-dashoffset 1.5s ease-out;
+        }
+
+        .hidden { display: none !important; }
+    </style>
+</head>
+<body>
+
+    <div id="main-container">
+        
+        <!-- PANTALLA INICIAL -->
+        <div id="screen-start" class="scroll-content flex flex-col items-center justify-center text-center animate__animated animate__fadeIn">
+            <span class="px-4 py-1.5 bg-blue-100 text-custom font-bold text-xs uppercase tracking-widest rounded-full mb-4">Evaluación de Repaso</span>
+            <h1 class="text-4xl font-bold text-custom mb-3 leading-tight">Gobernanza y Estrategia BI</h1>
+            <p class="text-2xl mb-5 text-slate-700 font-semibold">Gestión, Democratización y Planificación de Datos</p>
+            <p class="mb-10 max-w-2xl text-slate-600 text-lg">Demuestra tu dominio sobre las políticas de gobernanza, el empoderamiento a través del Self-Service BI y la alineación estratégica de los proyectos analíticos.</p>
+            <button onclick="startQuiz()" class="btn-action text-xl shadow-lg">INICIAR REPASO</button>
+        </div>
+
+        <!-- PANTALLA DE CUESTIONARIO -->
+        <div id="screen-quiz" class="hidden flex flex-col h-full">
+            <div class="px-14 pt-8 flex justify-between items-center z-10">
+                <span id="q-number" class="font-bold text-custom text-sm tracking-widest uppercase"></span>
+                <div class="w-48 h-2 bg-blue-200/50 rounded-full overflow-hidden backdrop-blur-sm">
+                    <div id="progress-fill" class="h-full bg-custom transition-all duration-500" style="width: 0%"></div>
+                </div>
+            </div>
+
+            <div class="scroll-content animate__animated animate__fadeIn" id="quiz-body">
+                <p id="q-instruction" class="text-custom font-bold italic mb-2 text-base"></p>
+                
+                <div id="question-text-container" class="mb-6 leading-relaxed text-slate-800">
+                    <h2 id="q-text" class="text-lg font-semibold leading-snug text-slate-800 border-l-4 border-blue-600 pl-4 py-1 bg-white/50 rounded-r-lg"></h2>
+                </div>
+
+                <div id="options-container" class="space-y-3"></div>
+
+                <div id="matching-container" class="hidden space-y-6">
+                    <div class="p-4 bg-white/60 border border-white rounded-2xl text-center shadow-sm">
+                        <p class="text-xs font-bold mb-3 uppercase text-slate-500 tracking-wider">Conceptos disponibles (arrastre o haga clic para seleccionar):</p>
+                        <div id="concept-bank" class="flex flex-wrap justify-center gap-3 min-h-[60px]"></div>
+                    </div>
+                    
+                    <div id="matching-grid" class="space-y-3"></div>
+                </div>
+
+                <div id="warning-box" class="hidden mt-4 p-4 rounded-xl bg-amber-50/90 border border-amber-200 text-amber-800 font-medium text-sm flex items-center justify-center animate__animated animate__shakeX">
+                    ⚠️ Por favor, responde la pregunta o completa todas las relaciones antes de continuar.
+                </div>
+
+                <div id="feedback-box" class="hidden mt-6 p-5 rounded-2xl border-2 animate__animated animate__fadeInUp text-base bg-white/80 backdrop-blur-md">
+                    <p id="feedback-title" class="font-bold text-lg mb-1"></p>
+                    <div id="feedback-body" class="leading-relaxed text-slate-700"></div>
+                    <button id="btn-continue" onclick="nextStep()" class="mt-4 bg-slate-800 text-white px-8 py-2 rounded-xl hover:bg-black transition-all font-bold text-sm">Continuar</button>
+                </div>
+
+                <button id="btn-validate" onclick="validateAnswer()" class="btn-action w-full mt-6 shadow-xl text-lg">Validar Respuesta</button>
+            </div>
+        </div>
+
+        <!-- PANTALLA DE RESULTADOS -->
+        <div id="screen-results" class="hidden scroll-content flex flex-col items-center">
+            <h2 class="text-4xl font-bold mb-2 text-custom text-center">Repaso Finalizado</h2>
+            
+            <div class="flex flex-col items-center justify-center my-4">
+                <div class="relative flex items-center justify-center">
+                    <svg class="w-56 h-56 -rotate-90">
+                        <circle cx="112" cy="112" r="95" stroke="rgba(255,255,255,0.5)" stroke-width="10" fill="none"></circle>
+                        <circle id="final-circle" cx="112" cy="112" r="95" class="circle-bar" stroke-dasharray="596" stroke-dashoffset="596"></circle>
+                    </svg>
+                    <div class="absolute text-5xl font-black text-slate-800"><span id="result-percent">0</span>%</div>
+                </div>
+            </div>
+
+            <p id="result-score" class="text-xl font-bold mb-4 text-slate-700 text-center"></p>
+            <div id="result-msg" class="w-full max-w-2xl mb-6 p-5 bg-white/70 rounded-2xl italic text-slate-700 text-base text-center shadow-sm border border-white"></div>
+            
+            <button onclick="location.reload()" class="btn-action mb-8">Reiniciar Repaso</button>
+
+            <div class="w-full max-w-3xl border-t border-blue-200/50 pt-8 mt-4 text-left">
+                <h3 class="text-2xl font-bold text-custom mb-6 text-center">Revisión de respuestas</h3>
+                <div id="summary-cards" class="space-y-6"></div>
+            </div>
+
+            <button onclick="location.reload()" class="btn-action mt-10 mb-6">Reiniciar Repaso</button>
+        </div>
+    </div>
+
+    <script>
+        const quizData = [
+            {
+                type: "vf",
+                instruction: "Seleccione Verdadero o Falso",
+                question: "1. La gobernanza de datos en un entorno de Business Intelligence busca establecer políticas, roles y estándares que garanticen la calidad, seguridad y disponibilidad de los datos utilizados en los procesos analíticos de la organización.",
+                options: [
+                    {t: "Verdadero", c: true},
+                    {t: "Falso", c: false}
+                ],
+                feedback: "La gobernanza de datos es un componente fundamental dentro de las estrategias de Business Intelligence. Su propósito es asegurar que los datos utilizados para el análisis sean confiables, consistentes y estén adecuadamente gestionados. Para ello se establecen políticas, roles organizacionales (como Chief Data Officer o Data Stewards), estándares de calidad y procesos de control que permiten garantizar el uso responsable y efectivo de la información dentro de la organización."
+            },
+            {
+                type: "ms",
+                instruction: "Seleccione la respuesta correcta",
+                question: "2. ¿Cuál es uno de los principales objetivos del Self-Service Business Intelligence dentro de una organización?",
+                options: [
+                    {t: "a) Limitar el acceso a los datos únicamente a los equipos técnicos especializados.", c: false},
+                    {t: "b) Permitir que los usuarios de negocio accedan y analicen datos mediante herramientas intuitivas sin depender completamente del área de tecnología.", c: true},
+                    {t: "c) Eliminar completamente los procesos de gobernanza de datos dentro de la organización.", c: false},
+                    {t: "d) Sustituir todos los sistemas tradicionales de almacenamiento de datos.", c: false}
+                ],
+                feedback: "El Self-Service BI busca democratizar el acceso a la información dentro de las organizaciones, permitiendo que los usuarios de negocio puedan explorar y analizar datos utilizando herramientas de visualización y análisis intuitivas. Sin embargo, este enfoque no elimina la necesidad de gobernanza de datos ni reemplaza las arquitecturas de almacenamiento existentes, sino que complementa los sistemas analíticos tradicionales."
+            },
+            {
+                type: "match",
+                instruction: "Relacione cada concepto con su definición correspondiente",
+                question: "3. Empareje cada uno de los elementos estratégicos con su definición correcta:",
+                pairs: [
+                    { id: "p1", concept: "Gobernanza de Datos", desc: "c. Conjunto de políticas, estándares y roles que garantizan la correcta gestión, calidad y seguridad de los datos dentro de una organización." },
+                    { id: "p2", concept: "Self-Service BI", desc: "a. Enfoque que permite a los usuarios de negocio acceder, analizar y visualizar datos de manera autónoma mediante herramientas analíticas." },
+                    { id: "p3", concept: "Estrategia de Business Intelligence", desc: "d. Plan organizacional que define cómo se utilizarán los datos, las herramientas analíticas y los procesos de BI para apoyar los objetivos estratégicos de la empresa." },
+                    { id: "p4", concept: "Proyecto de Business Intelligence", desc: "b. Iniciativa estructurada que busca implementar soluciones analíticas para apoyar la toma de decisiones en una organización." }
+                ],
+                feedback: "Una estrategia de Business Intelligence define cómo la organización utilizará los datos para apoyar sus objetivos estratégicos. La gobernanza de datos establece las políticas y responsabilidades necesarias para garantizar la calidad y seguridad de la información. El Self-Service BI permite que los usuarios de negocio analicen datos de manera autónoma mediante herramientas analíticas, mientras que los proyectos de BI representan iniciativas estructuradas orientadas a implementar soluciones de análisis de datos dentro de la organización."
+            }
+        ];
+
+        let currentIdx = 0;
+        let score = 0;
+        const totalPoints = 6; // Q1(1) + Q2(1) + Q3(4) = 6
+        let selectedMatchingItem = null;
+
+        function startQuiz() {
+            document.getElementById('screen-start').classList.add('hidden');
+            document.getElementById('screen-quiz').classList.remove('hidden');
+            renderQuestion();
+        }
+
+        function renderQuestion() {
+            const q = quizData[currentIdx];
+            selectedMatchingItem = null;
+            
+            document.getElementById('q-number').innerText = `PREGUNTA ${currentIdx + 1}/${quizData.length}`;
+            document.getElementById('progress-fill').style.width = `${((currentIdx + 1)/quizData.length)*100}%`;
+            document.getElementById('q-instruction').innerText = q.instruction;
+            document.getElementById('feedback-box').classList.add('hidden');
+            document.getElementById('warning-box').classList.add('hidden');
+            document.getElementById('btn-validate').classList.remove('hidden');
+
+            const optContainer = document.getElementById('options-container');
+            const matchContainer = document.getElementById('matching-container');
+
+            if (q.type === "match") {
+                optContainer.classList.add('hidden');
+                matchContainer.classList.remove('hidden');
+                document.getElementById('q-text').innerText = q.question;
+                setupMatching(q);
+            } else {
+                matchContainer.classList.add('hidden');
+                optContainer.classList.remove('hidden');
+                document.getElementById('q-text').innerText = q.question;
+                setupSelectionOptions(q, optContainer);
+            }
+        }
+
+        function setupSelectionOptions(q, container) {
+            container.innerHTML = '';
+            q.options.forEach((opt, i) => {
+                const d = document.createElement('div');
+                d.className = "option-card flex items-center p-4 rounded-xl mb-2 text-base";
+                d.innerHTML = `
+                    <input type="radio" name="ans" id="o${i}" value="${i}" class="w-5 h-5 accent-blue-700">
+                    <label for="o${i}" class="ml-4 w-full cursor-pointer font-medium text-slate-700">${opt.t}</label>
+                `;
+                d.onclick = () => {
+                    document.getElementById('warning-box').classList.add('hidden');
+                    document.querySelectorAll('.option-card').forEach(el => el.classList.remove('selected'));
+                    d.classList.add('selected');
+                    d.querySelector('input').checked = true;
+                };
+                container.appendChild(d);
+            });
+        }
+
+        function setupMatching(q) {
+            const bank = document.getElementById('concept-bank');
+            const grid = document.getElementById('matching-grid');
+            
+            bank.innerHTML = '';
+            grid.innerHTML = '';
+
+            const concepts = q.pairs.map(p => ({ id: p.id, concept: p.concept }));
+            concepts.sort(() => Math.random() - 0.5);
+
+            concepts.forEach((c) => {
+                const el = document.createElement('div');
+                el.className = "drag-item-matching animate__animated animate__fadeIn";
+                el.draggable = true;
+                el.innerText = c.concept;
+                el.id = `concept-${c.id}`;
+                el.dataset.pairId = c.id;
+
+                el.addEventListener('dragstart', (e) => {
+                    e.dataTransfer.setData('text/plain', e.target.id);
+                    document.getElementById('warning-box').classList.add('hidden');
+                });
+
+                el.addEventListener('click', () => {
+                    document.getElementById('warning-box').classList.add('hidden');
+                    if (selectedMatchingItem) selectedMatchingItem.classList.remove('selected-for-click');
+                    if (selectedMatchingItem === el) {
+                        selectedMatchingItem = null;
+                    } else {
+                        selectedMatchingItem = el;
+                        el.classList.add('selected-for-click');
+                    }
+                });
+                bank.appendChild(el);
+            });
+
+            const pairsRandom = [...q.pairs];
+            pairsRandom.sort(() => Math.random() - 0.5);
+
+            pairsRandom.forEach((pair) => {
+                const row = document.createElement('div');
+                row.className = "flex items-center justify-between p-3 bg-white/70 border border-white rounded-2xl gap-4 shadow-sm";
+                
+                row.innerHTML = `
+                    <div class="text-sm font-semibold text-slate-700 flex-1">${pair.desc}</div>
+                    <div class="drop-zone-matching flex justify-center items-center" data-expected-id="${pair.id}">
+                        <span class="text-slate-400 text-xs font-semibold uppercase tracking-wider">Colocar Aquí</span>
+                    </div>
+                `;
+
+                const zone = row.querySelector('.drop-zone-matching');
+
+                zone.addEventListener('dragover', (e) => { e.preventDefault(); zone.classList.add('active'); });
+                zone.addEventListener('dragleave', () => zone.classList.remove('active'));
+                zone.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    zone.classList.remove('active');
+                    const itemId = e.dataTransfer.getData('text/plain');
+                    placeConcept(document.getElementById(itemId), zone);
+                });
+
+                zone.addEventListener('click', () => {
+                    if (selectedMatchingItem) {
+                        const targetItem = selectedMatchingItem;
+                        targetItem.classList.remove('selected-for-click');
+                        selectedMatchingItem = null;
+                        placeConcept(targetItem, zone);
+                    } else {
+                        const placed = zone.querySelector('.drag-item-matching');
+                        if (placed) {
+                            placed.classList.remove('placed');
+                            document.getElementById('concept-bank').appendChild(placed);
+                            zone.innerHTML = `<span class="text-slate-400 text-xs font-semibold uppercase tracking-wider">Colocar Aquí</span>`;
+                        }
+                    }
+                });
+                grid.appendChild(row);
+            });
+        }
+
+        function placeConcept(element, zone) {
+            if (element) {
+                const oldElement = zone.querySelector('.drag-item-matching');
+                if (oldElement) {
+                    oldElement.classList.remove('placed');
+                    document.getElementById('concept-bank').appendChild(oldElement);
+                }
+                zone.innerHTML = '';
+                element.classList.add('placed');
+                zone.appendChild(element);
+            }
+        }
+
+        function validateAnswer() {
+            const q = quizData[currentIdx];
+            let isCorrect = true;
+            let earnedPoints = 0;
+
+            if (q.type === "match") {
+                const zones = document.querySelectorAll('.drop-zone-matching');
+                let allPlaced = true;
+                zones.forEach(z => { if (!z.querySelector('.drag-item-matching')) allPlaced = false; });
+
+                if (!allPlaced) { document.getElementById('warning-box').classList.remove('hidden'); return; }
+
+                document.getElementById('warning-box').classList.add('hidden');
+                q.userAnswers = []; 
+
+                zones.forEach(zone => {
+                    const expectedId = zone.dataset.expectedId;
+                    const placedEl = zone.querySelector('.drag-item-matching');
+                    const placedId = placedEl.dataset.pairId;
+                    
+                    const originPair = q.pairs.find(p => p.id === expectedId);
+
+                    q.userAnswers.push({
+                        expectedConcept: originPair.concept,
+                        expectedDesc: originPair.desc,
+                        placedConcept: placedEl.innerText,
+                        isRight: (expectedId === placedId)
+                    });
+
+                    if (expectedId === placedId) {
+                        earnedPoints++;
+                        zone.style.borderColor = "#22c55e";
+                        zone.style.background = "#f0fdf4";
+                    } else {
+                        isCorrect = false;
+                        zone.style.borderColor = "#ef4444";
+                        zone.style.background = "#fef2f2";
+                    }
+                    zone.style.pointerEvents = "none";
+                });
+                score += earnedPoints;
+            } else {
+                const selectedInput = document.querySelector('input[name="ans"]:checked');
+                if (!selectedInput) { document.getElementById('warning-box').classList.remove('hidden'); return; }
+
+                document.getElementById('warning-box').classList.add('hidden');
+                const chosenVal = parseInt(selectedInput.value);
+                q.userAnswer = chosenVal; 
+
+                isCorrect = q.options[chosenVal].c;
+                if (isCorrect) score++;
+                document.querySelectorAll('.option-card').forEach(el => el.classList.add('locked'));
+            }
+
+            const fBox = document.getElementById('feedback-box');
+            fBox.classList.remove('hidden', 'border-green-300', 'border-red-300', 'border-amber-300');
+            document.getElementById('btn-validate').classList.add('hidden');
+
+            const fTitle = document.getElementById('feedback-title');
+            if (q.type === "match") {
+                if (isCorrect) {
+                    fTitle.innerText = "¡Correcto!";
+                    fTitle.className = "font-bold text-lg text-green-700";
+                    fBox.classList.add('border-green-300');
+                } else {
+                    fTitle.innerText = `Puntaje parcial: ${earnedPoints} de 4 aciertos`;
+                    fTitle.className = "font-bold text-lg text-amber-700";
+                    fBox.classList.add('border-amber-300');
+                }
+            } else {
+                if (isCorrect) {
+                    fTitle.innerText = "¡Correcto!";
+                    fTitle.className = "font-bold text-lg text-green-700";
+                    fBox.classList.add('border-green-300');
+                } else {
+                    fTitle.innerText = "Incorrecto";
+                    fTitle.className = "font-bold text-lg text-red-700";
+                    fBox.classList.add('border-red-300');
+                }
+            }
+            document.getElementById('feedback-body').innerHTML = `<strong>Realimentación:</strong> ${q.feedback}`;
+        }
+
+        function nextStep() {
+            currentIdx++;
+            if (currentIdx < quizData.length) renderQuestion();
+            else showResults();
+        }
+
+        function showResults() {
+            document.getElementById('screen-quiz').classList.add('hidden');
+            document.getElementById('screen-results').classList.remove('hidden');
+            
+            const percent = Math.round((score / totalPoints) * 100);
+            const circumference = 596;
+            const offset = circumference - (percent / 100) * circumference;
+            
+            requestAnimationFrame(() => {
+                setTimeout(() => { document.getElementById('final-circle').style.strokeDashoffset = offset; }, 50);
+            });
+            
+            let count = 0;
+            const timer = setInterval(() => {
+                if (count >= percent) {
+                    document.getElementById('result-percent').innerText = percent;
+                    clearInterval(timer);
+                    // Efecto de Confeti si alcanza el 100%
+                    if(percent === 100) {
+                        confetti({
+                            particleCount: 150,
+                            spread: 70,
+                            origin: { y: 0.6 },
+                            colors: ['#1d4ed8', '#ffffff', '#93c5fd']
+                        });
+                    }
+                } else {
+                    count++;
+                    document.getElementById('result-percent').innerText = count;
+                }
+            }, 15);
+
+            document.getElementById('result-score').innerText = `Puntaje Final: ${score} de ${totalPoints} puntos`;
+            const msg = document.getElementById('result-msg');
+            
+            if (percent === 100) {
+                msg.innerText = "¡Excelente! Comprendes a la perfección cómo estructurar políticas de datos y democratizar la información a través del Self-Service BI con un enfoque estratégico.";
+            } else if (percent >= 70) {
+                msg.innerText = "¡Buen trabajo! Tienes claros los conceptos principales, aunque puedes darle un último repaso a la conexión entre las estrategias y los proyectos de BI.";
+            } else {
+                msg.innerText = "Te sugerimos repasar la diferencia entre la gobernanza y el autoservicio de datos, así como el rol de los proyectos frente a la estrategia global del negocio.";
+            }
+
+            buildSummaryCards();
+        }
+
+        function buildSummaryCards() {
+            const container = document.getElementById('summary-cards');
+            container.innerHTML = '';
+
+            quizData.forEach((q, idx) => {
+                const card = document.createElement('div');
+                card.className = "p-6 rounded-2xl border-l-8 bg-white/80 shadow-sm transition-all duration-300 animate__animated animate__fadeInUp backdrop-blur-md";
+                
+                let isFullyCorrect = false;
+                let statusBadge = '';
+                let userValHTML = '';
+                let correctValHTML = '';
+
+                if (q.type === "match") {
+                    let correctCount = 0;
+                    q.userAnswers.forEach(ans => { if (ans.isRight) correctCount++; });
+                    isFullyCorrect = (correctCount === q.pairs.length);
+
+                    if (isFullyCorrect) {
+                        card.classList.add('border-green-500');
+                        statusBadge = '<span class="px-3 py-1 bg-green-100 text-green-800 text-xs font-bold rounded-full">Correcto</span>';
+                    } else if (correctCount > 0) {
+                        card.classList.add('border-amber-500');
+                        statusBadge = `<span class="px-3 py-1 bg-amber-100 text-amber-800 text-xs font-bold rounded-full">Parcial (${correctCount}/4)</span>`;
+                    } else {
+                        card.classList.add('border-red-500');
+                        statusBadge = '<span class="px-3 py-1 bg-red-100 text-red-800 text-xs font-bold rounded-full">Incorrecto</span>';
+                    }
+
+                    userValHTML = "<div class='space-y-2 mt-1.5'>";
+                    q.userAnswers.forEach(ans => {
+                        const clr = ans.isRight ? "text-green-700 font-semibold" : "text-red-600 font-semibold";
+                        userValHTML += `
+                            <div class="text-sm bg-slate-50 p-2 rounded-lg border border-slate-100">
+                                <span class="font-bold text-slate-500">Definición:</span> <span class="text-slate-800 italic">"${ans.expectedDesc}"</span><br/>
+                                <span class="font-bold text-slate-500">Tu relación:</span> <span class="${clr}">${ans.placedConcept}</span> ${ans.isRight ? '✓' : `(Correcto: <span class="text-green-700 font-semibold">${ans.expectedConcept}</span>)`}
+                            </div>
+                        `;
+                    });
+                    userValHTML += "</div>";
+
+                } else {
+                    const userAnsIdx = q.userAnswer;
+                    const correctAnsIdx = q.options.findIndex(o => o.c);
+                    isFullyCorrect = (userAnsIdx === correctAnsIdx);
+
+                    if (isFullyCorrect) {
+                        card.classList.add('border-green-500');
+                        statusBadge = '<span class="px-3 py-1 bg-green-100 text-green-800 text-xs font-bold rounded-full">Correcto</span>';
+                        userValHTML = `<span class="text-green-700 font-medium">${q.options[userAnsIdx].t}</span>`;
+                    } else {
+                        card.classList.add('border-red-500');
+                        statusBadge = '<span class="px-3 py-1 bg-red-100 text-red-800 text-xs font-bold rounded-full">Incorrecto</span>';
+                        userValHTML = `<span class="text-red-600 font-semibold">${userAnsIdx !== undefined && userAnsIdx !== null ? q.options[userAnsIdx].t : '[Sin responder]'}</span>`;
+                        correctValHTML = `
+                            <div class="text-sm mt-1">
+                                <span class="font-semibold text-slate-500">Respuesta correcta sugerida:</span> 
+                                <span class="text-green-700 font-medium">${q.options[correctAnsIdx].t}</span>
+                            </div>
+                        `;
+                    }
+                }
+
+                card.innerHTML = `
+                    <div class="flex justify-between items-center mb-3">
+                        <span class="text-sm font-bold text-slate-400 uppercase tracking-wider">Pregunta ${idx + 1}</span>
+                        ${statusBadge}
+                    </div>
+                    <div class="font-semibold text-slate-800 mb-3 text-base">${q.question}</div>
+                    
+                    <div class="bg-white/80 p-4 rounded-xl border border-slate-100 space-y-1.5 mb-3 shadow-inner">
+                        <div class="text-sm"><span class="font-semibold text-slate-600">Tu respuesta:</span> ${userValHTML}</div>
+                        ${correctValHTML}
+                    </div>
+                    
+                    <div class="text-sm text-slate-600 bg-blue-50/80 p-3 rounded-xl border border-blue-100">
+                        <strong class="text-custom">Explicación académica:</strong> ${q.feedback}
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+    </script>
+</body>
+</html>
